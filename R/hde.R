@@ -1,5 +1,5 @@
 # Package hde source code
-# Checking pull/pull capability
+# Checking push/pull capability
 
 emlist = function(X, Y){
   # Create a list of objects to be emulated
