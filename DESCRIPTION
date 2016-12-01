@@ -7,4 +7,4 @@ Maintainer: Doug McNeall <dougmcneall@gmail.com>
 Description: High dimensional emulation using dimension reduction.
 License: What license is it under?
 LazyData: TRUE
-Imports: parallel
+Imports: parallel, DiceKriging
