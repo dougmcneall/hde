@@ -56,7 +56,7 @@ direct.pred = function(form,X,Y,Xnew,...){
   # Directly applies km in parallel to predict each column of an ensemble
   ens.list = emlist(X=X, Y=Y)
   km.list = mclapply(ens.list,FUN=km.wrap, form = form)
-  pred.list = mclapply(km.list,
+  pred.list = parallel::mclapply(km.list,
                        FUN = predict,
                        newdata = as.matrix(Xnew, nrow =1),
                        type = 'UK')
