@@ -114,6 +114,8 @@ kmpar.pc = function(form = ~., Y, X, newdata, num.pc, scale=FALSE, center=TRUE, 
   return(list(tens=tens, scores.em=scores.em, Z.em=Z.em, anom.sd=anom.sd))
 }
 
+
+
 remap.famous = function(dat,longs,lats, shift = FALSE){
   # reshape a map in vector form so that image() like functions
   # will plot it correctly
