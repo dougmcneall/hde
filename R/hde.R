@@ -98,6 +98,7 @@ kmpar.pc = function(form = ~., Y, X, newdata, num.pc, scale=FALSE, center=TRUE, 
 
   pred = direct.pred(form=form, X=X, Y=pca$x[ ,1:num.pc], Xnew=newdata)
 
+  # Want these to both be matrices
   scores.em = matrix(pred$mean, nrow = nrow(newdata))
   Z.em = matrix(pred$sd, nrow = nrow(newdata))
 
