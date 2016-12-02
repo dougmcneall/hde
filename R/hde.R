@@ -99,7 +99,7 @@ kmpar.pc = function(form = ~., Y, X, newdata, num.pc, scale=FALSE, center=TRUE, 
   pred = direct.pred(form=form, X=X, Y=pca$x[ ,1:num.pc], Xnew=newdata)
 
   scores.em = matrix(pred$mean, nrow = nrow(newdata))
-  Z.em = as.matrix(pred$sd, nrow = nrow(newdata))
+  Z.em = matrix(pred$sd, nrow = nrow(newdata))
 
   # this projection is in the "excised" state
   proj = pc.project(pca, scores.em, Z.em, scale)
@@ -113,6 +113,8 @@ kmpar.pc = function(form = ~., Y, X, newdata, num.pc, scale=FALSE, center=TRUE, 
 
   return(list(tens=tens, scores.em=scores.em, Z.em=Z.em, anom.sd=anom.sd))
 }
+
+
 
 remap.famous = function(dat,longs,lats, shift = FALSE){
   # reshape a map in vector form so that image() like functions
