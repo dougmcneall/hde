@@ -25,7 +25,7 @@ km.wrap = function(form, em, ...){
   # each list element in em contains a design matrix X
   # and an output vector y
   out = NA
-  fit = try(km(form, design=em$X, response=em$y, control=list(trace=FALSE), ...), silent=TRUE)
+  fit = try(DiceKriging::km(form, design=em$X, response=em$y, control=list(trace=FALSE), ...), silent=TRUE)
   #if(class(fit) == "try-error"){
   #  out = NA
   #}
@@ -110,4 +110,23 @@ kmpar.pc = function(form = ~., Y, X, newdata, num.pc, scale=FALSE, center=TRUE, 
 
   return(list(tens=tens, scores.em=scores.em, Z.em=Z.em, anom.sd=anom.sd))
 }
+
+remap.famous = function(dat,longs,lats, shift = FALSE){
+  # reshape a map in vector form so that image() like functions
+  # will plot it correctly
+  mat = matrix(dat, nrow = length(longs), ncol = length(lats))[ ,length(lats):1]
+  if(shift){
+    block1.ix = which(longs < shift)
+    block2.ix = which(longs > shift)
+    mat.shift = rbind(mat[ block2.ix, ], mat[block1.ix, ])
+    out = mat.shift
+  }
+  else{
+    out = mat
+  }
+  out
+}
+
+
+
 
