@@ -56,13 +56,16 @@ direct.pred = function(form,X,Y,Xnew,...){
   # Directly applies km in parallel to predict each column of an ensemble
   ens.list = emlist(X=X, Y=Y)
   km.list = mclapply(ens.list,FUN=km.wrap, form = form)
-  pred.list = parallel::mclapply(km.list,
+  pred.list = mclapply(km.list,
                        FUN = predict,
                        newdata = as.matrix(Xnew, nrow =1),
                        type = 'UK')
-  out = sapply(pred.list, function(x) x$mean )
-  out
+  out.mean = sapply(pred.list, function(x) x$mean )
+  out.sd = sapply(pred.list, function(x) x$sd )
+
+  return(list(mean=out.mean, sd=out.sd))
 }
+
 
 finite.cols = function(Y){
   #find where the columns of a matrix have all finite values
