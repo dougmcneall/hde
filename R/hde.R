@@ -36,6 +36,33 @@ km.wrap = function(form, em, ...){
   out
 }
 
+km.pred.wrap = function(kmobj, Xnew, ...){
+
+  pred = try(DiceKriging::predict.km(kmobj, newdata=Xnew, ...))
+  pred
+
+}
+
+extract.predmean = function(predobj){
+  if (class(predobj) == "try-error"){
+    out=NA
+  }
+  else {
+    out = predobj$mean
+  }
+  out
+}
+
+extract.predsd = function(predobj){
+  if (class(predobj) == "try-error"){
+    out = NA
+  }
+  else {
+    out = predobj$sd
+  }
+  out
+}
+
 # Functions for dimension reduced emulation
 pc.project = function(pca,scores.em,Z.em,scale){
   # project principal components
@@ -52,20 +79,17 @@ pc.project = function(pca,scores.em,Z.em,scale){
   return(list(tens = tens, anom.sd = anom.sd))
 }
 
-direct.pred = function(form,X,Y,Xnew,...){
+direct.pred = function (form, X, Y, Xnew, ...){
   # Directly applies km in parallel to predict each column of an ensemble
-  ens.list = emlist(X=X, Y=Y)
-  km.list = mclapply(ens.list,FUN=km.wrap, form = form)
-  pred.list = mclapply(km.list,
-                       FUN = predict,
-                       newdata = as.matrix(Xnew, nrow =1),
-                       type = 'UK')
-  out.mean = sapply(pred.list, function(x) x$mean )
-  out.sd = sapply(pred.list, function(x) x$sd )
+  ens.list = emlist(X = X, Y = Y)
+  km.list = mclapply(ens.list, FUN = km.wrap2, form = form)
 
-  return(list(mean=out.mean, sd=out.sd))
+  pred.list = mclapply(km.list, FUN = km.pred.wrap, Xnew = as.matrix(Xnew, nrow = 1), type = "UK")
+
+  out.mean = sapply(pred.list, FUN=extract.predmean)
+  out.sd = sapply(pred.list, FUN=extract.predsd)
+  return(list(mean = out.mean, sd = out.sd))
 }
-
 
 finite.cols = function(Y){
   #find where the columns of a matrix have all finite values
