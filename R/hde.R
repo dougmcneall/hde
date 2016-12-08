@@ -82,7 +82,7 @@ pc.project = function(pca,scores.em,Z.em,scale){
 direct.pred = function (form, X, Y, Xnew, ...){
   # Directly applies km in parallel to predict each column of an ensemble
   ens.list = emlist(X = X, Y = Y)
-  km.list = mclapply(ens.list, FUN = km.wrap2, form = form)
+  km.list = mclapply(ens.list, FUN = km.wrap, form = form)
 
   pred.list = mclapply(km.list, FUN = km.pred.wrap, Xnew = as.matrix(Xnew, nrow = 1), type = "UK")
 
